@@ -37,7 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String username = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
 
-        UserEntity existData = userRepository.findByUsername(username);
+        UserEntity existData = userRepository.findByUserName(username);
 
         if(existData == null) {
 

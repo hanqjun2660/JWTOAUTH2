@@ -39,7 +39,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
 
         response.addCookie(createCookie("Authentication", token));
-        response.sendRedirect("http://localhost:8080/");        // 로그인 성공시 프론트에 알려줄 redirect 경로
+        /*response.sendRedirect("http://localhost:8080/");*/        // 로그인 성공시 프론트에 알려줄 redirect 경로
     }
 
     private Cookie createCookie(String key, String value) {
