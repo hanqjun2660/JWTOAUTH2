@@ -34,7 +34,6 @@ public class JWTUtil {
 
     // Jwt Parser를 이용하여 Token에서 유효날짜 추출
     public Boolean isExpired(String token) {
-
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
