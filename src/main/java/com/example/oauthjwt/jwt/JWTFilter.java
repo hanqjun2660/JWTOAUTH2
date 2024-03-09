@@ -2,11 +2,9 @@ package com.example.oauthjwt.jwt;
 
 import com.example.oauthjwt.dto.CustomOAuth2User;
 import com.example.oauthjwt.dto.UserDTO;
-import com.example.oauthjwt.entity.UserEntity;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

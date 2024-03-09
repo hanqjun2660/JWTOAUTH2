@@ -36,7 +36,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        // JWTUtil의 createJwt 메서드로 토큰 생성(유효일자는 하드코딩이라 추후 변경 필요)
+        // JWTUtil의 createJwt 메서드로 토큰 생성(유효일자는 하드코딩이라 추후 변경 필요 -> application.yml에 설정하거나 하자)
         String accessToken = jwtUtil.createJwt("access", username, role, 60000L);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
