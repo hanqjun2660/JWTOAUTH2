@@ -33,7 +33,7 @@ InteliJ IDEA
 ### Flow Image
 ![image](https://github.com/hanqjun2660/ToDoListAPI/assets/124249170/25c4f350-76c2-427c-93b4-20d84cc78385)
 
-* 책임을 front와 나눠서 처리하지 않고 back에서 외부 서버와 통신합니다.
+> 책임을 front와 나눠서 처리하지 않고 back에서 외부 서버와 통신합니다.
 
 1. oAuth를 이용해 외부 소셜 로그인 서비스와 리소스 서버로부터 인증정보를 활용해 JWT를 발급.<br>
    (accessToken, refreshToken 동시발급 / accessToken -> Header, refreshToken -> Cookie로 응답)
