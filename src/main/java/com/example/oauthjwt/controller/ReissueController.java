@@ -59,10 +59,22 @@ public class ReissueController {
 
         // 새로운 JWT Token 생성
         String newAccessToken = jwtUtil.createJwt("access", username, role, 600000L);
+        String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
         // 응답
         response.setHeader("access", "Bearer " + newAccessToken);
+        response.addCookie(createCookie("refresh", newRefreshToken));
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(24*60*60);     // 쿠키가 살아있을 시간
+        /*cookie.setSecure();*/         // https에서만 동작할것인지 (로컬은 http 환경이라 안먹음)
+        /*cookie.setPath("/");*/        // 쿠키가 전역에서 동작
+        cookie.setHttpOnly(true);       // http에서만 쿠키가 동작할 수 있도록 (js와 같은곳에서 가져갈 수 없도록)
+
+        return cookie;
     }
 }
