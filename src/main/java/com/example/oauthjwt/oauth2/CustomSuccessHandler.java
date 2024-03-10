@@ -2,6 +2,7 @@ package com.example.oauthjwt.oauth2;
 
 import com.example.oauthjwt.dto.CustomOAuth2User;
 import com.example.oauthjwt.jwt.JWTUtil;
+import com.example.oauthjwt.service.RedisService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -22,6 +24,8 @@ import java.util.Iterator;
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
+
+    private final RedisService redisService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -39,6 +43,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // JWTUtil의 createJwt 메서드로 토큰 생성(유효일자는 하드코딩이라 추후 변경 필요 -> application.yml에 설정하거나 하자)
         String accessToken = jwtUtil.createJwt("access", username, role, 60000L);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
+        // insert refreshToken to Redis
+        redisService.setValues(username, refreshToken, Duration.ofMillis(86400000L));
 
         response.setHeader("access", "Bearer " + accessToken);
         response.addCookie(createCookie("refresh", refreshToken));

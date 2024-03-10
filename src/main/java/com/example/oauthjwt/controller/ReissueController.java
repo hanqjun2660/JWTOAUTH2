@@ -1,6 +1,7 @@
 package com.example.oauthjwt.controller;
 
 import com.example.oauthjwt.jwt.JWTUtil;
+import com.example.oauthjwt.service.RedisService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,11 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+
 @RestController
 @RequiredArgsConstructor
 public class ReissueController {
 
     private final JWTUtil jwtUtil;
+
+    private final RedisService redisService;
 
     /**
      * refreshToken을 받아 새로운 AccessToken을 발급하는 메서드
@@ -57,9 +62,19 @@ public class ReissueController {
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
 
+        // redis에 있는 refreshToken일 경우에만 새로운 accessToken, refreshToken을 발급받을 수 있다. (이전 refreshToken으로 새로운 토큰을 발급받지 못하게 처리)
+        String redisRefrshToken = redisService.getValues(username);
+
+        if(redisService.checkExistsValue(redisRefrshToken)) {
+            return new ResponseEntity<>("no exists in redis refresh token", HttpStatus.BAD_REQUEST);
+        }
+
         // 새로운 JWT Token 생성
         String newAccessToken = jwtUtil.createJwt("access", username, role, 600000L);
         String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
+        // update refreshToken to Redis
+        redisService.setValues(username, newRefreshToken, Duration.ofMillis(86400000L));
 
         // 응답
         response.setHeader("access", "Bearer " + newAccessToken);
