@@ -41,3 +41,5 @@ InteliJ IDEA
 3. Redis에 refreshToken을 기록하며, Duration(TTL)을 쿠키의 유효기간과 동일하게 설정하여 자동 삭제시킴
 4. refreshToken이 없고 AccessToken이 만료된 경우 다시 외부 소셜 로그인 서비스와<br>
    리소스 서버로부터 인증정보 요청하여 JWT 발급
+5. accessToken이 만료되어 refreshToken으로 accessToken 재발급 요청시 access/refresh 동시 재발급<br>
+   (이 경우에도 refreshToken은 Redis에 업데이트 하여 기록)
