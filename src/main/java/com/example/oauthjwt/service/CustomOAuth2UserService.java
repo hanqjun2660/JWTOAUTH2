@@ -66,7 +66,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             existData.setEmail(oAuth2Response.getEmail());
             existData.setName(oAuth2Response.getName());
-            existData.setName(oAuth2Response.getProfileImage());
+            existData.setProfileImage(oAuth2Response.getProfileImage());
 
             userRepository.save(existData);
 

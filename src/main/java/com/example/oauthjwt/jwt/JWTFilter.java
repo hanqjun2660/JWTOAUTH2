@@ -36,9 +36,12 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+        // Bearer 제거
+        String originToken = accessToken.substring(7);
+
         // Token 만료 확인
         try {
-            jwtUtil.isExpired(accessToken);
+            jwtUtil.isExpired(originToken);
         } catch (ExpiredJwtException e) {
             PrintWriter writer = response.getWriter();
             writer.println("access token expired");
@@ -48,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // accessToken인지 refreshToken인지 확인
-        String category = jwtUtil.getCatgory(accessToken);
+        String category = jwtUtil.getCatgory(originToken);
 
         if(!category.equals("access")) {
             PrintWriter writer = response.getWriter();
@@ -59,8 +62,8 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Token에서 username, role 추출
-        String username = jwtUtil.getUsername(accessToken);
-        String role = jwtUtil.getRole(accessToken);
+        String username = jwtUtil.getUsername(originToken);
+        String role = jwtUtil.getRole(originToken);
 
         UserDTO userDTO = new UserDTO();
         userDTO.setUserName(username);
