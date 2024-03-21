@@ -43,3 +43,4 @@ InteliJ IDEA
    리소스 서버로부터 인증정보 요청하여 JWT 발급
 5. accessToken이 만료되어 refreshToken으로 accessToken 재발급 요청시 access/refresh 동시 재발급<br>
    (이 경우에도 refreshToken은 Redis에 업데이트 하여 기록)
+6. logout시 client측 refreshToken(Cookie) -> null로 변경, redis내 refreshToken 삭제
