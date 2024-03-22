@@ -1,6 +1,5 @@
 package com.example.oauthjwt.jwt;
 
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

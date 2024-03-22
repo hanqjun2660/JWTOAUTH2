@@ -47,7 +47,9 @@ public class ReissueController {
 
         // 유효기간 확인
         try {
-            jwtUtil.isExpired(refresh);
+            if(jwtUtil.isExpired(refresh)) {
+                return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
+            }
         } catch (ExpiredJwtException e) {
             return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
